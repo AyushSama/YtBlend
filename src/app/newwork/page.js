@@ -1,6 +1,7 @@
 'use client'
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 
 export default function page() {
@@ -453,13 +454,21 @@ export default function page() {
             // Handle errors appropriately, e.g., display an error message to the user
         }
     };
+    const router = useRouter();
+    const handleBack = ()=>{
+        router.push("/editor");
+    }
 
     return (
         <div className='h-screen'>
-            <section className="flex gap-5 justify-between items-start px-6 pt-7 pb-20 bg-white max-md:flex-wrap max-md:px-5">
-                <div className="shrink-0 bg-zinc-300 h-[37px] w-[37px]"></div>
+            <section className="flex gap-5 items-center justify-between mx-8 items-start px-6 pt-7 pb-10 bg-white max-md:flex-wrap max-md:px-5 ">
+                <div className='flex flex-row'>
+                <button onClick={()=>handleBack()}><svg className=" h-[37px] w-[37px]" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M400-80 0-480l400-400 71 71-329 329 329 329-71 71Z" /></svg></button>
+                <img className='h-[50px]' src="/Ytblend.jpg" alt="" />
+                </div>
+
                 <div className="flex gap-0 max-md:flex-wrap">
-                    <input type='text' onChange={(event) => setSearchTerm(event.target.value)} className="shrink-0 max-w-full h-9 bg-white border border-black border-solid w-[569px]"></input>
+                    <input type='text' onChange={(event) => setSearchTerm(event.target.value)} className="rounded-l-3xl pl-3 shrink-0 max-w-full h-9 bg-white border border-black border-solid w-[569px]"></input>
                     <button onClick={(e) => handleSearch(e)} className="shrink-0 h-9 bg-white rounded-r-3xl border border-black border-solid w-[76px] flex items-center justify-center">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" fill="currentColor" />
