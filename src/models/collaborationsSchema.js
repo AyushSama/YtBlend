@@ -12,7 +12,7 @@ const collaborationsSchema = new mongoose.Schema({
         required:true,
     },
     uploadsApproved:{
-        type:Number,
+        type:String,
         default:0
     }
 });

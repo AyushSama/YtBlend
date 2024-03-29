@@ -1710,7 +1710,7 @@ export default function page() {
             }
         }
     ]);
-    
+
     const handleSearch = async (event) => {
         try {
 
