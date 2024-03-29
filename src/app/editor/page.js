@@ -27,10 +27,10 @@ export default function page() {
                 </button>
                 <img className='h-[50px] ml-3' src="/Ytblend.png" alt="" />
                 <input type='text' className="px-4 py-1.5 text-xl grow mx-4 bg-white rounded-lg border border-solid border-neutral-200 text-ellipsis text-zinc-500" placeholder='search..'></input>
-                <button className="px-4 py-2 bg-cyan-900 rounded-lg" onClick={() => handleSignIn()}>
+                {!session.data?.user.image && <button className="px-4 py-2 bg-cyan-900 rounded-lg" onClick={() => handleSignIn()}>
                     Sign Up / Login
-                </button>
-                <img src={session.data?.user.image} className="ml-2 w-9 h-9 rounded-full" aria-label="Button"></img>
+                </button>}
+                {session.data?.user.image && <img src={session.data?.user.image} className="ml-2 w-9 h-9 rounded-full" aria-label="Button"></img>}
             </div>
             <button onClick={()=>handleNewWork()}>
                 <figure className="flex w-[177px] max-w-full mt-60 flex-col self-center whitespace-nowrap rounded-3xl bg-neutral-400 px-16 py-10 text-black">
