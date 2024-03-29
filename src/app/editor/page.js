@@ -1,11 +1,18 @@
 'use client'
 import React from 'react'
 import {signIn} from 'next-auth/react'
+import toast from 'react-hot-toast'
 import { useRouter } from 'next/navigation'
 
 export default function page() {
     
     const router = useRouter();
+    
+    const handleSignIn = async ()=>{
+        await signIn("google");
+        toast.success('Signed In..');
+    }
+
     const handleNewWork = () =>{
         router.push("/newwork");
     }
@@ -17,7 +24,7 @@ export default function page() {
                     Workspace &gt;
                 </button>
                 <input type='text' className="px-4 py-1.5 text-xl grow mx-4 bg-white rounded-lg border border-solid border-neutral-200 text-ellipsis text-zinc-500" placeholder='search..'></input>
-                <button className="px-4 py-2 bg-cyan-900 rounded-lg" onClick={() => signIn("google")}>
+                <button className="px-4 py-2 bg-cyan-900 rounded-lg" onClick={() => handleSignIn()}>
                     Sign Up / Login
                 </button>
             </div>

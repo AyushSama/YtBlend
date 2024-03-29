@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
+import { useSession } from 'next-auth/react';
 
 export default function page() {
 
@@ -449,13 +450,56 @@ export default function page() {
             setSearchResults(response.data.items);
             toast.success('Success..');
         } catch (error) {
-            console.error('Error fetching search results:', error);
+            console.error('Error fetching search results:', error.message);
             toast.error('Server Error!!');
             // Handle errors appropriately, e.g., display an error message to the user
         }
     };
+
+    const session = useSession();
+    console.log(session)
+
+    const handleCollaborate = async (channelId) => {
+        try {
+            
+            const requestBody = {
+                channelId: channelId, // Destructure directly from the argument
+                email : session.data.user.email,
+            };
+
+            // Send a POST request to your API route
+            const requestBodyString = JSON.stringify(requestBody);
+            console.log(requestBodyString)
+
+            // Send a POST request to your API route
+            const response = await axios.post('/api/setcollaborations', requestBodyString);
+
+            const responseData = response.data;
+
+            if (responseData.message === 'Collaboration created successfully!') {
+                // Handle success scenario (e.g., display a success message)
+                console.log('Collaboration created successfully!');
+                toast.success('Collaboration Added..');
+            } else  if (responseData.message === 'Collaboration updated successfully!'){
+                console.log('Collaboration updated successfully!');
+                toast.success('Collaboration Updated..');
+            } else  if (responseData.message === 'Collaboration already Exists'){
+                console.log('Collaboration already Exists');
+                toast.success('Collaboration Already Exists..');
+            }else {
+                console.error('Error creating collaboration:', responseData.message);
+                // Handle error scenario (e.g., display an error message)
+                toast.error(responseData.message);
+            }
+        } catch (error) {
+            console.error('Error submitting collaboration:', error.message);
+            toast.error('Server Error');
+            // Handle errors gracefully (e.g., display a generic error message)
+        }
+    };
+
     const router = useRouter();
-    const handleBack = ()=>{
+    const handleBack = () => {
         router.push("/editor");
     }
 
@@ -463,8 +507,8 @@ export default function page() {
         <div className='h-screen'>
             <section className="flex gap-5 items-center justify-between mx-8 items-start px-6 pt-7 pb-10 bg-white max-md:flex-wrap max-md:px-5 ">
                 <div className='flex flex-row'>
-                <button onClick={()=>handleBack()}><svg className=" h-[37px] w-[37px]" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M400-80 0-480l400-400 71 71-329 329 329 329-71 71Z" /></svg></button>
-                <img className='h-[50px]' src="/Ytblend.jpg" alt="" />
+                    <button onClick={() => handleBack()}><svg className=" h-[37px] w-[37px]" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M400-80 0-480l400-400 71 71-329 329 329 329-71 71Z" /></svg></button>
+                    <img className='h-[50px]' src="/Ytblend.jpg" alt="" />
                 </div>
 
                 <div className="flex gap-0 max-md:flex-wrap">
@@ -495,7 +539,7 @@ export default function page() {
                                         <a href={`https://www.youtube.com/channel/${result.id.channelId}`} target="_blank" rel="noreferrer noopener">
                                             <span className='text-2xl font-black'>{result.snippet.title}</span>
                                         </a>
-                                        <button className='bg-black text-white px-3 rounded-full'>Collaborate</button>
+                                        <button onClick={() => handleCollaborate(result.id.channelId)} className='bg-black text-white px-3 rounded-full'>Collaborate</button>
                                     </div>
                                     <p className="shrink-0 mt-2.5 h-[73px] max-md:max-w-full">{result.snippet.description}</p>
                                 </div>
