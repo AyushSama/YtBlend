@@ -3,10 +3,12 @@ import React from 'react'
 import {signIn} from 'next-auth/react'
 import toast from 'react-hot-toast'
 import { useRouter } from 'next/navigation'
+import { useSession } from 'next-auth/react'
 
 export default function page() {
     
     const router = useRouter();
+    const session = useSession();
     
     const handleSignIn = async ()=>{
         await signIn("google");
@@ -19,14 +21,16 @@ export default function page() {
 
     return (
         <section className="flex h-screen w-screen flex-col items-center  bg-zinc-100 px-14 py-5 text-base font-medium leading-6 max-md:px-5">
-            <div className="flex justify-between w-full text-white max-md:flex-wrap">
+            <div className="flex items-center justify-between w-full text-white max-md:flex-wrap">
                 <button className="px-4 py-2 rounded-lg bg-cyan-950 max-md:px-5">
                     Workspace &gt;
                 </button>
+                <img className='h-[50px] ml-3' src="/Ytblend.png" alt="" />
                 <input type='text' className="px-4 py-1.5 text-xl grow mx-4 bg-white rounded-lg border border-solid border-neutral-200 text-ellipsis text-zinc-500" placeholder='search..'></input>
                 <button className="px-4 py-2 bg-cyan-900 rounded-lg" onClick={() => handleSignIn()}>
                     Sign Up / Login
                 </button>
+                <img src={session.data?.user.image} className="ml-2 w-9 h-9 rounded-full" aria-label="Button"></img>
             </div>
             <button onClick={()=>handleNewWork()}>
                 <figure className="flex w-[177px] max-w-full mt-60 flex-col self-center whitespace-nowrap rounded-3xl bg-neutral-400 px-16 py-10 text-black">
